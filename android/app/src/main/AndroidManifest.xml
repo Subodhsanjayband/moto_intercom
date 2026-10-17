@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.motocom.intercom">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Audio Recording and Processing -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -7,7 +6,6 @@
 
     <!-- Bluetooth Helmet Headsets (SCO / HFP) -->
     <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
     <!-- Wi-Fi Direct & Hotspot Management -->
@@ -16,7 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- Camera for QR Code Scanning -->
@@ -32,8 +30,7 @@
     <application
         android:label="MotoCom"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true">
+        android:icon="@mipmap/ic_launcher">
         
         <activity
             android:name=".MainActivity"
@@ -54,6 +51,7 @@
             </intent-filter>
         </activity>
 
+        <!-- Pure Modern Flutter v2 Embedding Declaration -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
