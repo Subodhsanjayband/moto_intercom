@@ -9,7 +9,7 @@ import 'services/intercom_platform_service.dart';
 /// - Real-time link health & audio meters
 /// - Direct YouTube Music ducking control
 class IntercomScreen extends StatefulWidget {
-  const IntercomScreen({Key? key}) : super(key: key);
+  const IntercomScreen({super.key});
 
   @override
   State<IntercomScreen> createState() => _IntercomScreenState();

@@ -7,7 +7,7 @@ import '../services/intercom_platform_service.dart';
 class QrPairDialog extends StatefulWidget {
   final Function(MotoComPairingData pairingData, bool isHost) onConnected;
 
-  const QrPairDialog({Key? key, required this.onConnected}) : super(key: key);
+  const QrPairDialog({super.key, required this.onConnected});
 
   @override
   State<QrPairDialog> createState() => _QrPairDialogState();

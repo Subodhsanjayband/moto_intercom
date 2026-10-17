@@ -42,9 +42,23 @@ class MotoComAndroidEngine(private val context: Context) {
                 override fun onStarted(reservation: WifiManager.LocalOnlyHotspotReservation) {
                     super.onStarted(reservation)
                     hotspotReservation = reservation
-                    val config = reservation.wifiConfiguration
-                    val ssid = config?.SSID ?: "MotoCom_Direct"
-                    val password = config?.preSharedKey ?: "RiderPillion2026"
+                    
+                    val ssid: String
+                    val password: String
+                    
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        val softApConfig = reservation.softApConfiguration
+                        ssid = softApConfig?.ssid ?: "MotoCom_Direct"
+                        password = softApConfig?.passphrase ?: "RiderPillion2026"
+                    } else {
+                        @Suppress("DEPRECATION")
+                        val config = reservation.wifiConfiguration
+                        @Suppress("DEPRECATION")
+                        ssid = config?.SSID ?: "MotoCom_Direct"
+                        @Suppress("DEPRECATION")
+                        password = config?.preSharedKey ?: "RiderPillion2026"
+                    }
+                    
                     onHotspotReady(ssid, password)
                 }
 
@@ -56,13 +70,30 @@ class MotoComAndroidEngine(private val context: Context) {
     }
 
     // --- 2. BLUETOOTH HELMET AUDIO ROUTING & DUCKING ---
-    fun startAudioSession(enableDucking: Bool = true) {
+    fun startAudioSession(enableDucking: Boolean = true) {
         // Set mode to communication for VoIP / Intercom
         audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
 
-        // Route mic & speaker to Bluetooth helmet headset
-        audioManager.startBluetoothSco()
-        audioManager.isBluetoothScoOn = true
+        // Modern API 31+ communication device routing with fallback to SCO
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val devices = audioManager.availableCommunicationDevices
+            val btDevice = devices.firstOrNull { 
+                it.type == AudioDeviceInfo.TYPE_BLUETOOTH_SCO || it.type == AudioDeviceInfo.TYPE_BLE_HEADSET 
+            }
+            if (btDevice != null) {
+                audioManager.setCommunicationDevice(btDevice)
+            } else {
+                @Suppress("DEPRECATION")
+                audioManager.startBluetoothSco()
+                @Suppress("DEPRECATION")
+                audioManager.isBluetoothScoOn = true
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            audioManager.startBluetoothSco()
+            @Suppress("DEPRECATION")
+            audioManager.isBluetoothScoOn = true
+        }
 
         if (enableDucking && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val focusType = AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
@@ -151,7 +182,13 @@ class MotoComAndroidEngine(private val context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && audioFocusRequest != null) {
             audioManager.abandonAudioFocusRequest(audioFocusRequest!!)
         }
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            audioManager.clearCommunicationDevice()
+        }
+        @Suppress("DEPRECATION")
         audioManager.stopBluetoothSco()
+        @Suppress("DEPRECATION")
         audioManager.isBluetoothScoOn = false
         audioManager.mode = AudioManager.MODE_NORMAL
     }

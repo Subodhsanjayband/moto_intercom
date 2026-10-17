@@ -15,7 +15,7 @@ void main() async {
 }
 
 class MotoComApp extends StatefulWidget {
-  const MotoComApp({Key? key}) : super(key: key);
+  const MotoComApp({super.key});
 
   @override
   State<MotoComApp> createState() => _MotoComAppState();
@@ -44,9 +44,13 @@ class _MotoComAppState extends State<MotoComApp> {
       title: 'MotoCom Intercom',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        useMaterial3: true,
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xFF121212),
-        primarySwatch: Colors.amber,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.amber,
+          brightness: Brightness.dark,
+        ),
         fontFamily: 'Roboto',
       ),
       home: const IntercomScreen(),
