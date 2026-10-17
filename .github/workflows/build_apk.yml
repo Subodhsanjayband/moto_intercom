@@ -5,37 +5,33 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
-env:
-  ACTIONS_RUNNER_FORCE_NODE24: "true"
-
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4
 
       - name: Set up Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '17'
 
       - name: Set up Flutter SDK (Stable 3.22.x)
-        uses: subosito/flutter-action@v2.16.0
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.x'
           channel: 'stable'
-          cache: false
 
       - name: Install Dependencies
         run: flutter pub get
 
       - name: Build Debug APK
-        run: flutter build apk --debug --no-daemon
+        run: flutter build apk --debug
 
       - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4.4.3
+        uses: actions/upload-artifact@v4
         with:
           name: motocom-debug-apk
           path: build/app/outputs/flutter-apk/app-debug.apk
