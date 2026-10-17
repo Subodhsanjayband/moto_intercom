@@ -3,7 +3,7 @@ name: Build MotoCom Android APK
 on:
   push:
     branches: [ main, master ]
-  workflow_dispatch: # Allows manual trigger from GitHub UI with one click
+  workflow_dispatch:
 
 jobs:
   build:
@@ -24,6 +24,17 @@ jobs:
           flutter-version: '3.22.x'
           channel: 'stable'
           cache: true
+
+      - name: Generate modern Android v2 embedding scaffolding
+        run: |
+          mkdir -p /tmp/motocom_backup
+          cp -r android/app/src/main/kotlin /tmp/motocom_backup/
+          cp android/app/src/main/AndroidManifest.xml /tmp/motocom_backup/
+
+          flutter create --platforms=android --org com.motocom .
+
+          cp -r /tmp/motocom_backup/kotlin/* android/app/src/main/kotlin/
+          cp /tmp/motocom_backup/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
 
       - name: Install Dependencies
         run: flutter pub get
