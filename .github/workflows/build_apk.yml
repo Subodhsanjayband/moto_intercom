@@ -25,48 +25,11 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Recreate Pristine Android v2 Embedding Scaffolding
-        run: |
-          # 1. Back up our custom native Kotlin engine & MainActivity
-          mkdir -p /tmp/motocom_src
-          cp -r android/app/src/main/kotlin /tmp/motocom_src/ 2>/dev/null || true
-
-          # 2. Remove all outdated/conflicting Android files completely
-          rm -rf android
-
-          # 3. Generate pristine, 100% modern Flutter 3.22 Android platform
-          flutter create --platforms=android --org com.motocom.intercom .
-
-          # 4. Copy back our custom Kotlin files into the generated structure
-          mkdir -p android/app/src/main/kotlin/com/motocom/intercom
-          cp -r /tmp/motocom_src/kotlin/com/motocom/intercom/* android/app/src/main/kotlin/com/motocom/intercom/ 2>/dev/null || true
-
-          # 5. Inject required permissions into the pristine AndroidManifest.xml
-          python3 -c '
-          path = "android/app/src/main/AndroidManifest.xml"
-          with open(path, "r") as f:
-              data = f.read()
-          perms = """
-              <uses-permission android:name="android.permission.RECORD_AUDIO" />
-              <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-              <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
-              <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-              <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-              <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-              <uses-permission android:name="android.permission.INTERNET" />
-              <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
-              <uses-permission android:name="android.permission.CAMERA" />
-          """
-          data = data.replace("<application", perms + "\n    <application")
-          with open(path, "w") as f:
-              f.write(data)
-          '
-
       - name: Install Dependencies
         run: flutter pub get
 
       - name: Build Debug APK
-        run: flutter build apk --debug
+        run: flutter build apk --debug --verbose
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
