@@ -28,7 +28,6 @@ class MainActivity: FlutterActivity() {
                 // Host calls this to turn on Wi-Fi hotspot and get credentials for QR
                 "startLocalHotspot" -> {
                     engine.startLocalHotspot { ssid, passphrase ->
-                        engine.startVoiceStreaming("255.255.255.255", 50005)
                         result.success(mapOf(
                             "ssid" to ssid,
                             "passphrase" to passphrase,

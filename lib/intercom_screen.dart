@@ -76,7 +76,7 @@ class _IntercomScreenState extends State<IntercomScreen> {
             margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
-              color: isConnected ? Colors.green.withValues(alpha: 0.2) : Colors.red.withValues(alpha: 0.2),
+              color: isConnected ? Colors.green.withOpacity(0.2) : Colors.red.withOpacity(0.2),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: isConnected ? Colors.greenAccent : Colors.redAccent),
             ),
@@ -132,7 +132,7 @@ class _IntercomScreenState extends State<IntercomScreen> {
                       borderRadius: BorderRadius.circular(28),
                       border: Border.all(
                         color: !isConnected
-                            ? Colors.amberAccent.withValues(alpha: 0.6)
+                            ? Colors.amberAccent.withOpacity(0.6)
                             : (isTalking ? Colors.redAccent : Colors.greenAccent),
                         width: 2,
                       ),
@@ -141,7 +141,7 @@ class _IntercomScreenState extends State<IntercomScreen> {
                           color: (!isConnected
                                   ? Colors.amberAccent
                                   : (isTalking ? Colors.redAccent : Colors.green))
-                              .withValues(alpha: isConnected ? 0.4 : 0.15),
+                              .withOpacity(isConnected ? 0.4 : 0.15),
                           blurRadius: 20,
                           spreadRadius: 3,
                         ),
@@ -181,7 +181,7 @@ class _IntercomScreenState extends State<IntercomScreen> {
                                   ? "Auto-triggers on voice • Wind noise filtered"
                                   : "Press and hold to speak"),
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.8),
+                            color: Colors.white.withOpacity(0.8),
                             fontSize: 13,
                           ),
                         ),
@@ -339,8 +339,8 @@ class _IntercomScreenState extends State<IntercomScreen> {
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: isConnected
-              ? Colors.greenAccent.withValues(alpha: 0.5)
-              : Colors.redAccent.withValues(alpha: 0.3),
+              ? Colors.greenAccent.withOpacity(0.5)
+              : Colors.redAccent.withOpacity(0.3),
           width: 1.5,
         ),
       ),
@@ -394,7 +394,7 @@ class _IntercomScreenState extends State<IntercomScreen> {
                           boxShadow: isConnected
                               ? [
                                   BoxShadow(
-                                    color: Colors.greenAccent.withValues(alpha: 0.8),
+                                    color: Colors.greenAccent.withOpacity(0.8),
                                     blurRadius: 8,
                                     spreadRadius: 1,
                                   ),
@@ -451,7 +451,7 @@ class _IntercomScreenState extends State<IntercomScreen> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: isOnline ? color.withValues(alpha: 0.15) : Colors.white10,
+            color: isOnline ? color.withOpacity(0.15) : Colors.white10,
             shape: BoxShape.circle,
             border: Border.all(
               color: isOnline ? color : Colors.white24,
@@ -460,7 +460,7 @@ class _IntercomScreenState extends State<IntercomScreen> {
             boxShadow: isOnline
                 ? [
                     BoxShadow(
-                      color: color.withValues(alpha: 0.4),
+                      color: color.withOpacity(0.4),
                       blurRadius: 10,
                       spreadRadius: 1,
                     )
