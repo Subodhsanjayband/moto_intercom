@@ -16,7 +16,7 @@ class IntercomScreen extends StatefulWidget {
 }
 
 class _IntercomScreenState extends State<IntercomScreen> {
-  bool isConnected = true;
+  bool isConnected = false;
   bool isRiderHost = true;
   bool isOpenMic = true;
   bool isTalking = false;
@@ -24,7 +24,7 @@ class _IntercomScreenState extends State<IntercomScreen> {
   double noiseGateThreshold = -32.0; // dBFS
   double intercomVolume = 0.85;
   double duckingLevel = 0.25; // 25% background YouTube Music volume when talking
-  int pingMs = 14;
+  int pingMs = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class _IntercomScreenState extends State<IntercomScreen> {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  isConnected ? "${pingMs}ms Direct" : "Offline",
+                  isConnected ? "Connected • 12ms" : "Offline (Tap PAIR QR)",
                   style: TextStyle(
                     color: isConnected ? Colors.green : Colors.red,
                     fontSize: 12,
@@ -273,7 +273,14 @@ class _IntercomScreenState extends State<IntercomScreen> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
                       onPressed: () {
-                        // Toggle Mute All
+                        IntercomPlatformService.playTestTone();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            duration: Duration(milliseconds: 800),
+                            backgroundColor: Colors.purple,
+                            content: Text("Playing audio diagnostic test tone..."),
+                          ),
+                        );
                       },
                       icon: const Icon(Icons.volume_up, color: Colors.pinkAccent),
                       label: const Text("AUDIO TEST", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),

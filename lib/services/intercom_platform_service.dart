@@ -81,4 +81,13 @@ class IntercomPlatformService {
       print("Error stopping voice stream: ${e.message}");
     }
   }
+
+  /// Plays a diagnostic 440Hz test tone to confirm speaker output
+  static Future<void> playTestTone() async {
+    try {
+      await _channel.invokeMethod('testAudioTone');
+    } on PlatformException catch (e) {
+      print("Error playing test tone: ${e.message}");
+    }
+  }
 }
